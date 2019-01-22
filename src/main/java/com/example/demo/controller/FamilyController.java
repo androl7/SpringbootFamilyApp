@@ -66,5 +66,9 @@ public class FamilyController {
     public String findOldestBabyService(@PathVariable Integer familyId){
         return familyService.findOldestBabyService(familyId);
     }
+    @RequestMapping("/familyWithOldestFather")
+    public String findFamilyWithOldestFather(){
+        return familyService.findFamilyWithOldestFather();
+    }
 
 }

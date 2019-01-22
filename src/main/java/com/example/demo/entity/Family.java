@@ -92,4 +92,8 @@ public class Family implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "FamilyID: "+familyId+" FatherName: "+father.getName()+" "+father.getSurname();
+    }
 }

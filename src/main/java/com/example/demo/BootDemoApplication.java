@@ -46,6 +46,8 @@ public class BootDemoApplication {
 		familyService.addChildToFamily(child3,1);
 
 		FamilyDto familyDto2 = new FamilyDto();
-		familyService.createFamily(familyDto2);*/
+		familyService.createFamily(familyDto2);
+		FatherDto father2 = new FatherDto("Jacek","Golota","9412011221","01/12/1990");
+		familyService.addFatherToFamily(father2,6);*/
 	}
 }
