@@ -6,13 +6,15 @@ import com.example.demo.dto.FatherDto;
 import com.example.demo.service.FamilyService;
 import com.example.demo.service.ReadFamilyWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/family")
 @RestController
-public class FamilyController {
+public class FamilyRestController {
     @Autowired
     private FamilyService familyService;
 
@@ -52,6 +54,7 @@ public class FamilyController {
         return familyService.readChildren(familyId);
     }
 
+
     @RequestMapping("/readFamily/{familyId}")
     public ReadFamilyWrapper readFamily(@PathVariable Integer familyId){
         return familyService.readFamily(familyId);
@@ -72,3 +75,5 @@ public class FamilyController {
     }
 
 }
+
+

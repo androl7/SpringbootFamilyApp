@@ -75,18 +75,18 @@ public class Family implements Serializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         //take all babies -> 1 year from now
-        List<Child> helpingArray = children.stream().filter(child -> LocalDate.parse(child.getBirthDate(),formatter).isAfter(dateYearAgo)&&(LocalDate.parse(child.getBirthDate(),formatter)).isBefore(todayDate)).collect(Collectors.toList());
+        List<Child> babiesList = children.stream().filter(child -> LocalDate.parse(child.getBirthDate(),formatter).isAfter(dateYearAgo)&&(LocalDate.parse(child.getBirthDate(),formatter)).isBefore(todayDate)).collect(Collectors.toList());
 
         //sort from oldest to youngest
-        helpingArray.sort((o1, o2) -> ComparisonChain.start()
+        babiesList.sort((o1, o2) -> ComparisonChain.start()
                 .compare(o1.getBirthDate().substring(6, 10),o2.getBirthDate().substring(6, 10))
                 .compare(o1.getBirthDate().substring(3, 5), o2.getBirthDate().substring(3, 5))
                 .compare(o1.getBirthDate().substring(0, 2), o2.getBirthDate().substring(0, 2))
                 .result());
 
         //return oldest
-        if(helpingArray.size()>0) {
-            return String.valueOf(Period.between(LocalDate.parse(helpingArray.get(0).getBirthDate(), formatter), todayDate).getMonths());
+        if(babiesList.size()>0) {
+            return String.valueOf(Period.between(LocalDate.parse(babiesList.get(0).getBirthDate(), formatter), todayDate).getMonths());
         }else {
             return "There is no baby in this family";
         }

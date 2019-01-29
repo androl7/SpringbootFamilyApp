@@ -2,9 +2,12 @@ package com.example.demo;
 
 import com.example.demo.entity.Child;
 import com.example.demo.entity.Family;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 
@@ -25,6 +28,7 @@ public class findOldestBabyUnitTest {
     @Test
     public void checkFamilyWithoutChildren(){
         assertEquals("There is no baby in this family",family.findOldestBaby());
+        assertThat(family.findOldestBaby(), CoreMatchers.containsString("There is no baby in this family"));
     }
 
     @Test
