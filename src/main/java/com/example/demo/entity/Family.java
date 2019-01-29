@@ -17,6 +17,15 @@ public class Family implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer familyId;
 
+    @Column(name = "family_surname")
+    private String family_surname;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "valid")
+    private Boolean valid;
+
 
     @OneToOne(mappedBy = "family",cascade = CascadeType.MERGE)
     private Father father;
@@ -37,6 +46,18 @@ public class Family implements Serializable {
         return children;
     }
 
+    public String getFamily_surname() {
+        return family_surname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Boolean getValid() {
+        return valid;
+    }
+
     public void setFamilyId(int familyId) {
         this.familyId = familyId;
     }
@@ -52,9 +73,27 @@ public class Family implements Serializable {
         this.children.add(child);
     }
 
+    public void setFamily_surname(String family_surname) {
+        this.family_surname = family_surname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
+
     public Family(Father father, List<Child> children) {
         this.father = father;
         this.children = children;
+    }
+
+    public Family(String family_surname, String password, Boolean valid) {
+        this.family_surname = family_surname;
+        this.password = password;
+        this.valid = valid;
     }
 
     public Family() {

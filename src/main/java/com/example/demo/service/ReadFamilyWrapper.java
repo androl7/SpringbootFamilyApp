@@ -1,17 +1,19 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ChildDto;
+import com.example.demo.dto.FamilyDto;
 import com.example.demo.dto.FatherDto;
+import com.example.demo.entity.Family;
 
 import java.util.List;
 
 public class ReadFamilyWrapper {
-    private Integer familyId;
+    private FamilyDto familyDto;
     private FatherDto fatherDto;
     private List<ChildDto> childList;
 
-    public ReadFamilyWrapper(Integer familyId,FatherDto fatherDto, List<ChildDto> childList) {
-        this.familyId = familyId;
+    public ReadFamilyWrapper(FamilyDto familyDto,FatherDto fatherDto, List<ChildDto> childList) {
+        this.familyDto = familyDto;
         this.fatherDto = fatherDto;
         this.childList = childList;
     }
@@ -35,11 +37,11 @@ public class ReadFamilyWrapper {
         this.childList = childDtoList;
     }
 
-    public Integer getFamilyId() {
-        return familyId;
+    public FamilyDto getFamily() {
+        return familyDto;
     }
 
-    public void setFamilyId(Integer familyId) {
-        this.familyId = familyId;
+    public void setFamily(FamilyDto familyDto) {
+        this.familyDto = familyDto;
     }
 }

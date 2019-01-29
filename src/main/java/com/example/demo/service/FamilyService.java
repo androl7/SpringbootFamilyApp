@@ -85,7 +85,7 @@ public class FamilyService {
 
     @Transactional(readOnly = true)
     public ReadFamilyWrapper readFamily(Integer familyId){
-        return new ReadFamilyWrapper(familyId,readFather(familyId),readChildren(familyId));
+        return new ReadFamilyWrapper(FamilyConverter.entityToDto(familyRepository.getOne(familyId)),readFather(familyId),readChildren(familyId));
     }
 
 
