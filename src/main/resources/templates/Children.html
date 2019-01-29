@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SpringMVC + Thymeleaf + Bootstrap 4 Table Example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container" >
+    <h1>Children Table</h1>
+    <div class="row col-md-12" >
+        <table id="ChildrenTable" class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>PESEL</th>
+                <th>BirthDate</th>
+                <th>Gender</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="child, rowStat: ${children}"
+                th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+                <td th:text="${child.childId}">1</td>
+                <td th:text="${child.name}">Andrzej</td>
+                <td th:text="${child.surname}">Małostkowy</td>
+                <td th:text="${child.PESEL}">94129101031</td>
+                <td th:text="${child.birthDate}">01/12/1002</td>
+                <td th:text="${child.gender}">M</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
