@@ -2,8 +2,6 @@ package com.example.demo.security;
 
 import com.example.demo.entity.Family;
 import com.example.demo.repository.FamilyRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +16,7 @@ import java.util.List;
 @Service
 public class FamilyServiceImpl implements UserDetailsService {
     @Autowired
+    private
     FamilyRepository familyRepository;
 
 

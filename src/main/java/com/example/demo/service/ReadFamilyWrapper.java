@@ -7,9 +7,10 @@ import com.example.demo.dto.FatherDto;
 import java.util.List;
 
 public class ReadFamilyWrapper {
-    private FamilyDto familyDto;
-    private FatherDto fatherDto;
-    private List<ChildDto> childList;
+    //had to be public for ThymeLeaf
+     public FamilyDto familyDto;
+     public FatherDto fatherDto;
+     public List<ChildDto> childList;
 
     public ReadFamilyWrapper(FamilyDto familyDto,FatherDto fatherDto, List<ChildDto> childList) {
         this.familyDto = familyDto;

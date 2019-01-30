@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,6 +99,16 @@ public class FamilyService {
     @Transactional(readOnly = true)
     public ReadFamilyWrapper readFamily(Integer familyId){
         return new ReadFamilyWrapper(FamilyConverter.entityToDto(familyRepository.getOne(familyId)),readFather(familyId),readChildren(familyId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReadFamilyWrapper> readFamilies(){
+        List<ReadFamilyWrapper> listOfFamilies = new ArrayList<>();
+        for(int i =0;i<familyRepository.findAll().size();i++){
+            int familyId = familyRepository.findAll().get(i).getFamilyId();
+            listOfFamilies.add(new ReadFamilyWrapper(FamilyConverter.entityToDto(familyRepository.findAll().get(i)),readFather(familyId),readChildren(familyId)));
+        }
+        return listOfFamilies;
     }
 
 
