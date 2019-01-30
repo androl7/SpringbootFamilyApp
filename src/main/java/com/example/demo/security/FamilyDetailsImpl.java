@@ -1,25 +1,28 @@
-package com.example.demo.Security;
+package com.example.demo.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 public class FamilyDetailsImpl implements UserDetails {
 
     private String username;
     private String password;
     private boolean enabled;
+    private List<GrantedAuthority> authorities;
 
-    public FamilyDetailsImpl(String username, String password, boolean enabled) {
+    public FamilyDetailsImpl(String username, String password, boolean enabled,List<GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.authorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override

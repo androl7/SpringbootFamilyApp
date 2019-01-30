@@ -23,6 +23,9 @@ public class Family implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Column(name="role")
+    private FamilyRole familyRole;
+
     @Column(name = "valid")
     private Boolean valid;
 
@@ -58,6 +61,14 @@ public class Family implements Serializable {
         return valid;
     }
 
+    public FamilyRole getFamilyRole() {
+        return familyRole;
+    }
+
+    public void setFamilyRole(FamilyRole familyRole) {
+        this.familyRole = familyRole;
+    }
+
     public void setFamilyId(int familyId) {
         this.familyId = familyId;
     }
@@ -90,10 +101,11 @@ public class Family implements Serializable {
         this.children = children;
     }
 
-    public Family(String family_surname, String password, Boolean valid) {
+    public Family(String family_surname, String password, Boolean valid,FamilyRole familyRole) {
         this.family_surname = family_surname;
         this.password = password;
         this.valid = valid;
+        this.familyRole = familyRole;
     }
 
     public Family() {

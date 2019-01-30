@@ -8,18 +8,25 @@ import com.example.demo.dto.FamilyDto;
 import com.example.demo.dto.FatherDto;
 import com.example.demo.entity.Child;
 import com.example.demo.entity.Family;
+import com.example.demo.entity.FamilyRole;
 import com.example.demo.repository.ChildRepository;
 import com.example.demo.repository.FamilyRepository;
 import com.example.demo.repository.FatherRepository;
 import com.google.common.collect.ComparisonChain;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +39,8 @@ public class FamilyService {
     @Autowired
     ChildRepository childRepository;
 
+    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
     @Transactional
     public void createFamily(FamilyDto familyDto) {
         familyRepository.save(FamilyConverter.dtoToEntity(familyDto));
@@ -42,7 +51,6 @@ public class FamilyService {
     public void addFatherToFamily(FatherDto fatherDto,Integer familyId) {
         fatherDto.setFamilyDto(FamilyConverter.entityToDto(familyRepository.getOne(familyId)));
         fatherRepository.save(FatherConverter.dtoToEntity(fatherDto));
-
     }
 
     @Transactional
@@ -79,7 +87,11 @@ public class FamilyService {
 
     @Transactional(readOnly = true)
     public List<ChildDto> searchChild(Integer familyId, String name){
-        return familyRepository.getOne(familyId).searchChild(name).stream().map(ChildConverter::entityToDto).collect(Collectors.toList());
+        if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_"+FamilyRole.PREMIUM.toString()))) {
+            return familyRepository.getOne(familyId).searchChild(name).stream().map(ChildConverter::entityToDto).collect(Collectors.toList());
+        }else {
+            return null;
+        }
     }
 
 
@@ -124,25 +136,25 @@ public class FamilyService {
     public String findFamilyWithOldestFather(){
 
         //take families with Father
-        List<Family> helpingArray = familyRepository.findAll().stream().filter(family -> family.getFather()!=null).collect(Collectors.toList());
+        List<Family> familiesWithFather = familyRepository.findAll().stream().filter(family -> family.getFather()!=null).collect(Collectors.toList());
 
         //sort from oldest to youngest
-        helpingArray.sort((o1, o2) -> ComparisonChain.start()
+        familiesWithFather.sort((o1, o2) -> ComparisonChain.start()
                 .compare(o1.getFather().getBirth_date().substring(6, 10),o2.getFather().getBirth_date().substring(6, 10))
                 .compare(o1.getFather().getBirth_date().substring(3, 5), o2.getFather().getBirth_date().substring(3, 5))
                 .compare(o1.getFather().getBirth_date().substring(0, 2), o2.getFather().getBirth_date().substring(0, 2))
                 .result());
 
-        List<Family> finalHelpingArray = helpingArray;
-        helpingArray = helpingArray.stream().filter(family -> finalHelpingArray.get(0).getFather().getBirth_date().equals(family.getFather().getBirth_date())).collect(Collectors.toList());
+        List<Family> helpingArray = familiesWithFather;
+        familiesWithFather = familiesWithFather.stream().filter(family -> helpingArray.get(0).getFather().getBirth_date().equals(family.getFather().getBirth_date())).collect(Collectors.toList());
 
 
 
-        if(helpingArray.size()==1) {
-            return helpingArray.get(0).toString();
-        }else if(helpingArray.size()>1){
+        if(familiesWithFather.size()==1) {
+            return familiesWithFather.get(0).toString();
+        }else if(familiesWithFather.size()>1){
             StringBuilder resultStr = new StringBuilder();
-            for(Family f:helpingArray){
+            for(Family f:familiesWithFather){
                 resultStr.append(f.toString());
                 resultStr.append(" ");
             }

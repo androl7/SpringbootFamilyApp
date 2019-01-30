@@ -2,7 +2,8 @@ CREATE TABLE Family (
     family_id INT PRIMARY KEY,
     family_surname VARCHAR(45) NOT NULL,
     password VARCHAR(100) NOT NULL,
-    valid BOOLEAN NOT NULL
+    valid BOOLEAN NOT NULL,
+    role INTEGER NOT NULL
 );
 
 CREATE TABLE Child (

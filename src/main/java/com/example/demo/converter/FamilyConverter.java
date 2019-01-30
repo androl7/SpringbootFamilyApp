@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 public class FamilyConverter {
 
     public static Family dtoToEntity(FamilyDto familyDto) {
-        Family family = new Family(familyDto.getFamily_surname(),familyDto.getPassword(),familyDto.getValid());
+        Family family = new Family(familyDto.getFamily_surname(),familyDto.getPassword(),familyDto.getValid(),familyDto.getFamilyRole());
         family.setFamilyId(familyDto.getFamilyID());
         return family;
     }
 
     public static FamilyDto entityToDto(Family family) {
-        return new FamilyDto(family.getFamilyId(),family.getFamily_surname(),family.getPassword(),family.getValid());
+        return new FamilyDto(family.getFamilyId(),family.getFamily_surname(),family.getPassword(),family.getValid(),family.getFamilyRole());
     }
 }
