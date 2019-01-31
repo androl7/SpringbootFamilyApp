@@ -39,6 +39,9 @@ public class BootDemoApplication {
 		FamilyDto familyDto = new FamilyDto("Golota","$2a$10$LcbjSnXcXXoVprYWfmrmLOgo03ns/fQShjZtKiajvjnp2RnqCdU3G",true, FamilyRole.PREMIUM);
 		familyService.createFamily(familyDto);
 
+		FamilyDto familyDto2 = new FamilyDto("Malysz","$2a$10$LcbjSnXcXXoVprYWfmrmLOgo03ns/fQShjZtKiajvjnp2RnqCdU3G",true, FamilyRole.NORMAL);
+		familyService.createFamily(familyDto2);
+
 
 		FatherDto father = new FatherDto("Andrzej","Golota","9412011221","01/12/1980");
 		familyService.addFatherToFamily(father,1);
@@ -52,8 +55,15 @@ public class BootDemoApplication {
 		ChildDto child3 = new ChildDto("Adam","Golota","9412011221","01/01/2019","M");
 		familyService.addChildToFamily(child3,1);
 
-		FamilyDto familyDto2 = new FamilyDto("Malysz","$2a$10$LcbjSnXcXXoVprYWfmrmLOgo03ns/fQShjZtKiajvjnp2RnqCdU3G",true, FamilyRole.NORMAL);
-		familyService.createFamily(familyDto2);
+
+		FatherDto father2 = new FatherDto("Mariusz","Malysz","9412011221","01/12/1980");
+		familyService.addFatherToFamily(father2,2);
+
+		ChildDto child4 = new ChildDto("Krystyna","Malysz","9412011221","01/08/2018","K");
+		familyService.addChildToFamily(child4,2);
+
+		ChildDto child5 = new ChildDto("Adam","Malysz","9412011221","01/01/2019","M");
+		familyService.addChildToFamily(child5,2);
 
 	}
 }

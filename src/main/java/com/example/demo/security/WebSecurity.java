@@ -16,7 +16,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                    .antMatchers("/family/readChildren").hasRole(FamilyRole.PREMIUM.toString())
+                    .antMatchers("/family/readChildrenRest").hasRole(FamilyRole.PREMIUM.toString())
 //                .antMatchers("/").permitAll()
 //                .antMatchers("/login").permitAll()
 //                .antMatchers( "/test").permitAll()

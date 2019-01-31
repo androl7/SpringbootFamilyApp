@@ -6,8 +6,6 @@ import com.example.demo.dto.FatherDto;
 import com.example.demo.service.FamilyService;
 import com.example.demo.service.ReadFamilyWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +17,10 @@ public class FamilyRestController {
     private FamilyService familyService;
 
 
+    @RequestMapping("/readChildrenRest")
+    public List<ChildDto> readAllChildren(){
+        return familyService.readAllChildren();
+    }
     @PostMapping("/createFamily")
     public void createFamily(@RequestBody FamilyDto familyDto) {
         familyService.createFamily(familyDto);
@@ -55,7 +57,7 @@ public class FamilyRestController {
     }
 
 
-    @RequestMapping("/readFamily/{familyId}")
+    @RequestMapping("/readFamilyRest/{familyId}")
     public ReadFamilyWrapper readFamily(@PathVariable Integer familyId){
         return familyService.readFamily(familyId);
     }

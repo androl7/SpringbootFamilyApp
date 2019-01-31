@@ -12,25 +12,35 @@
 
 <body>
 <div class="container" >
-    <h1>Families Table</h1>
+    <h1>Family Details</h1>
     <div class="row col-md-12" >
-        <table id="FamiliesTable" class="table">
+        <table id="FamilyDetails" class="table">
             <thead class="thead-dark">
             <tr>
-                <th>Id</th>
-                <th>Surname</th>
                 <th>Type</th>
+                <th>Surname</th>
+                <th>Name</th>
+                <th>PESEL</th>
+                <th>BirthDate</th>
                 <th>Options</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="familyWrap, rowStat: ${families}" class='clickable-row' data-href='url://facebook.pl'
+            <tr>
+                <td th:text="Father"></td>
+                <td th:text="${familyDetails.fatherDto.name}"></td>
+                <td th:text="${familyDetails.fatherDto.surname}"></td>
+                <td th:text="${familyDetails.fatherDto.PESEL}"></td>
+                <td th:text="${familyDetails.fatherDto.birthDate}"></td>
+            </tr>
+            <tr th:each="child, rowStat: ${familyDetails.childList}" class='clickable-row' data-href='url://facebook.pl'
                 th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
-                <td th:text="${familyWrap.familyDto.familyID}">1</td>
-                <td th:text="${familyWrap.familyDto.family_surname}">Golota</td>
-                <td th:text="${familyWrap.familyDto.familyRole}">Premium</td>
-                <td><a th:href="@{'/family/readFamily/' + ${familyWrap.familyDto.familyID}}" class="btn btn-info" role="button">Details</a>
-                    <a href="#link" class="btn btn-info" role="button">Delete</a></td>
+                <td th:text="Child"></td>
+                <td th:text="${child.surname}">1</td>
+                <td th:text="${child.name}">Golota</td>
+                <td th:text="${child.PESEL}">Premium</td>
+                <td th:text="${child.birthDate}">01/12/1994</td>
+                <td><a href="#link" class="btn btn-info" role="button">Delete</a></td>
             </tr>
             </tbody>
         </table>

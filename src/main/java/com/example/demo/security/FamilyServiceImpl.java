@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 public class FamilyServiceImpl implements UserDetailsService {
     @Autowired
-    private
     FamilyRepository familyRepository;
 
 
