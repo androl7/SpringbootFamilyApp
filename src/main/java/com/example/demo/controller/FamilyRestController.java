@@ -21,11 +21,11 @@ public class FamilyRestController {
     public List<ChildDto> readAllChildren(){
         return familyService.readAllChildren();
     }
+
     @PostMapping("/createFamily")
     public void createFamily(@RequestBody FamilyDto familyDto) {
         familyService.createFamily(familyDto);
     }
-
 
     @PostMapping(value = "/addFatherToFamily")
     public void addFatherToFamily(@PathVariable Integer familyId, @RequestBody FatherDto fatherDto) {
@@ -56,7 +56,6 @@ public class FamilyRestController {
         return familyService.readChildren(familyId);
     }
 
-
     @RequestMapping("/readFamilyRest/{familyId}")
     public ReadFamilyWrapper readFamily(@PathVariable Integer familyId){
         return familyService.readFamily(familyId);
@@ -67,10 +66,7 @@ public class FamilyRestController {
         return familyService.findOldestBaby(familyId);
     }
 
-    @RequestMapping("/{familyId}/oldestBabyService")
-    public String findOldestBabyService(@PathVariable Integer familyId){
-        return familyService.findOldestBabyService(familyId);
-    }
+
     @RequestMapping("/WithOldestFather")
     public String findFamilyWithOldestFather(){
         return familyService.findFamilyWithOldestFather();

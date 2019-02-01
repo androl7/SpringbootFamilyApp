@@ -1,10 +1,11 @@
 package com.example.demo.entity;
 
 import com.google.common.collect.ComparisonChain;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Clock;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,19 +24,19 @@ public class Family implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name="role")
+    @Column(name = "role")
     private FamilyRole familyRole;
 
     @Column(name = "valid")
     private Boolean valid;
 
 
-    @OneToOne(mappedBy = "family",cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "family", cascade = CascadeType.MERGE)
     private Father father;
 
 
-    @OneToMany(mappedBy = "family",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<Child> children= new LinkedList<>();
+    @OneToMany(mappedBy = "family", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Child> children = new LinkedList<>();
 
     public Integer getFamilyId() {
         return familyId;
@@ -80,6 +81,7 @@ public class Family implements Serializable {
     public void setChildens(List<Child> childrens) {
         this.children = childrens;
     }
+
     public void setChild(Child child) {
         this.children.add(child);
     }
@@ -101,7 +103,7 @@ public class Family implements Serializable {
         this.children = children;
     }
 
-    public Family(String family_surname, String password, Boolean valid,FamilyRole familyRole) {
+    public Family(String family_surname, String password, Boolean valid, FamilyRole familyRole) {
         this.family_surname = family_surname;
         this.password = password;
         this.valid = valid;
@@ -120,31 +122,26 @@ public class Family implements Serializable {
     }
 
     //Date have to be in dd/mm/yyyy format
-    public String findOldestBaby() {
-        LocalDate todayDate = LocalDate.now();
+    public Optional<Child> findOldestBaby(Clock clock) {
+        LocalDate todayDate = LocalDate.now(clock);
         LocalDate dateYearAgo = LocalDate.of(todayDate.getYear() - 1, todayDate.getMonth(), todayDate.getDayOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        //take all babies -> 1 year from now
-        List<Child> babiesList = children.stream().filter(child -> LocalDate.parse(child.getBirthDate(),formatter).isAfter(dateYearAgo)&&(LocalDate.parse(child.getBirthDate(),formatter)).isBefore(todayDate)).collect(Collectors.toList());
-
-        //sort from oldest to youngest
-        babiesList.sort((o1, o2) -> ComparisonChain.start()
-                .compare(o1.getBirthDate().substring(6, 10),o2.getBirthDate().substring(6, 10))
-                .compare(o1.getBirthDate().substring(3, 5), o2.getBirthDate().substring(3, 5))
-                .compare(o1.getBirthDate().substring(0, 2), o2.getBirthDate().substring(0, 2))
-                .result());
+        //take all babies -> 1 year from now and sort oldest to youngest
+        List<Child> babiesList = children.stream()
+                .filter(child -> LocalDate.parse(child.getBirthDate(), formatter).isAfter(dateYearAgo) && (LocalDate.parse(child.getBirthDate(), formatter)).isBefore(todayDate))
+                .sorted((o1, o2) -> ComparisonChain.start()
+                        .compare(o1.getBirthDate().substring(6, 10), o2.getBirthDate().substring(6, 10))
+                        .compare(o1.getBirthDate().substring(3, 5), o2.getBirthDate().substring(3, 5))
+                        .compare(o1.getBirthDate().substring(0, 2), o2.getBirthDate().substring(0, 2))
+                        .result()).collect(Collectors.toList());
 
         //return oldest
-        if(babiesList.size()>0) {
-            return String.valueOf(Period.between(LocalDate.parse(babiesList.get(0).getBirthDate(), formatter), todayDate).getMonths());
-        }else {
-            return "There is no baby in this family";
-        }
+        return (!babiesList.isEmpty()) ? Optional.of(babiesList.get(0)) : Optional.empty();
     }
 
     @Override
     public String toString() {
-        return "FamilyID: "+familyId+" FatherName: "+father.getName()+" "+father.getSurname();
+        return "FamilyID: " + familyId + " FatherName: " + father.getName() + " " + father.getSurname();
     }
 }

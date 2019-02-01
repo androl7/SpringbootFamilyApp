@@ -3,6 +3,7 @@ package com.example.demo;
 
 import com.example.demo.dto.FamilyDto;
 import com.example.demo.dto.FatherDto;
+import com.example.demo.entity.FamilyRole;
 import com.example.demo.service.FamilyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,11 +33,11 @@ public class findFamilyWithOldestFatherServiceTest {
 
     @Test
     public void shouldReturnFamilyWithOldestFather() {
-        FamilyDto familyDto = new FamilyDto(1);
+        FamilyDto familyDto = new FamilyDto(1,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto);
-        FamilyDto familyDto2 = new FamilyDto(2);
+        FamilyDto familyDto2 = new FamilyDto(2,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto2);
-        FamilyDto familyDto3 = new FamilyDto(3);
+        FamilyDto familyDto3 = new FamilyDto(3,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto3);
 
         familyService.addFatherToFamily(new FatherDto("Maciek","Wyrwigrosz","9412011221","01/12/1990"),1);
@@ -48,11 +49,11 @@ public class findFamilyWithOldestFatherServiceTest {
 
     @Test
     public void checkNoFathersInFamilies() {
-        FamilyDto familyDto = new FamilyDto(1);
+        FamilyDto familyDto = new FamilyDto(1,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto);
-        FamilyDto familyDto2 = new FamilyDto(2);
+        FamilyDto familyDto2 = new FamilyDto(2,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto2);
-        FamilyDto familyDto3 = new FamilyDto(3);
+        FamilyDto familyDto3 = new FamilyDto(3,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto3);
 
         assertEquals("There is no family with father in repo",familyService.findFamilyWithOldestFather());
@@ -60,11 +61,11 @@ public class findFamilyWithOldestFatherServiceTest {
 
     @Test
     public void shouldReturnFamilyWithOldestFathers() {
-        FamilyDto familyDto = new FamilyDto(1);
+        FamilyDto familyDto = new FamilyDto(1,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto);
-        FamilyDto familyDto2 = new FamilyDto(2);
+        FamilyDto familyDto2 = new FamilyDto(2,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto2);
-        FamilyDto familyDto3 = new FamilyDto(3);
+        FamilyDto familyDto3 = new FamilyDto(3,"M","M",true, FamilyRole.PREMIUM);
         familyService.createFamily(familyDto3);
 
         familyService.addFatherToFamily(new FatherDto("Maciek","Wyrwigrosz","9412011221","01/12/1990"),1);

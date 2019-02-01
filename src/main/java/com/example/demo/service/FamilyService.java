@@ -26,12 +26,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ClockProvider;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +45,8 @@ public class FamilyService {
     FatherRepository fatherRepository;
     @Autowired
     ChildRepository childRepository;
+    @Autowired
+    ClockProvider clockProvider;
 
     Authentication authentication;
 
@@ -71,7 +76,7 @@ public class FamilyService {
 
     @Transactional(readOnly = true)
     public ChildDto readChild(Integer familyId, Integer childId) {
-        return ChildConverter.entityToDto(familyRepository.getOne(familyId).readChild(childId).get());
+        return ChildConverter.entityToDto(familyRepository.getOne(familyId).readChild(childId).orElseThrow(() -> new IllegalArgumentException("Cannot find child for familiy")));
     }
 
     @Transactional(readOnly = true)
@@ -122,34 +127,14 @@ public class FamilyService {
 
     @Transactional(readOnly = true)
     public String findOldestBaby(Integer familyId) {
-        return familyRepository.getOne(familyId).findOldestBaby();
-    }
+        Optional<Child> oldestBadyOptional = familyRepository.getOne(familyId).findOldestBaby(clockProvider.getClock());
 
-    //Date have to be in dd/mm/yyyy format
-    @Transactional(readOnly = true)
-    public String findOldestBabyService(Integer familyId) {
-
-        LocalDate todayDate = LocalDate.now();
-        LocalDate dateYearAgo = LocalDate.of(todayDate.getYear() - 1, todayDate.getMonth(), todayDate.getDayOfMonth());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        //take all babies -> 1 year from now
-        List<Child> babiesList = familyRepository.getOne(familyId).getChildren().stream().filter(child -> LocalDate.parse(child.getBirthDate(), formatter).isAfter(dateYearAgo) && (LocalDate.parse(child.getBirthDate(), formatter)).isBefore(todayDate)).collect(Collectors.toList());
-
-        //sort from oldest to youngest
-        babiesList.sort((o1, o2) -> ComparisonChain.start()
-                .compare(o1.getBirthDate().substring(6, 10), o2.getBirthDate().substring(6, 10))
-                .compare(o1.getBirthDate().substring(3, 5), o2.getBirthDate().substring(3, 5))
-                .compare(o1.getBirthDate().substring(0, 2), o2.getBirthDate().substring(0, 2))
-                .result());
-
-        //return oldest
-        if (babiesList.size() > 0) {
-            return String.valueOf(Period.between(LocalDate.parse(babiesList.get(0).getBirthDate(), formatter), todayDate).getMonths());
-        } else {
-            return "There is no baby in this family";
-        }
+        return oldestBadyOptional.map(child ->String.valueOf(Period.between(LocalDate.parse(child.getBirthDate(),formatter),LocalDate.now(clockProvider.getClock())).getMonths())).orElse("no child");
     }
+
+
 
     @Transactional(readOnly = true)
     public String findFamilyWithOldestFather() {
