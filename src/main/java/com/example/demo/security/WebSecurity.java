@@ -17,7 +17,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                     .antMatchers("/family/readChildrenRest").hasRole(FamilyRole.PREMIUM.toString())
-                .antMatchers("/").permitAll();
+                .antMatchers("/").permitAll()
 //                .antMatchers("/login").permitAll()
 //                .antMatchers( "/test").permitAll()
 //                .antMatchers( "/favicon.ico").permitAll()
@@ -27,7 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/css/*").permitAll()
 //                .antMatchers("/js/*").permitAll()
 //                .antMatchers("/webjars/**").permitAll()
-//                .anyRequest().authenticated();
+                .anyRequest().authenticated();
         http.formLogin()
 //                .loginPage("/login")
                 .usernameParameter("username")

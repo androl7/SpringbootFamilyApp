@@ -1,16 +1,17 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.FamilyRole;
 import com.example.demo.service.FamilyService;
-import com.example.demo.service.ReadFamilyWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Collection;
+import java.util.List;
 
 
 @RequestMapping("/family")
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FamilyController {
     @Autowired
     private FamilyService familyService;
+
+    @Autowired
+    private List<ReadFamilyMapper> readFamilyMappers;
 
     Authentication authentication;
 
@@ -29,14 +33,16 @@ public class FamilyController {
 
     @RequestMapping("/readFamilies")
     public String readFamily(Model model){
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+        /*authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + FamilyRole.PREMIUM.toString()))) {
             model.addAttribute("families", familyService.readFamilies());
             return "FamiliesTab";
         }else {
             model.addAttribute("familyDetails",familyService.readFamily(familyService.findFamilyBySurname(authentication.getName()).getFamilyId()));
             return "FamilyDetails";
-        }
+        }*/
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        return readFamilyMappers.stream().filter(mapper -> mapper.isForRole(authorities)).map(mapper -> mapper.readFamily(model)).findAny().orElse("");
     }
 
     @RequestMapping("/readFamily/{familyId}")

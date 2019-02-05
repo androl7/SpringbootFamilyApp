@@ -13,26 +13,17 @@ import com.example.demo.repository.ChildRepository;
 import com.example.demo.repository.FamilyRepository;
 import com.example.demo.repository.FatherRepository;
 import com.google.common.collect.ComparisonChain;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.ClockProvider;
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,8 +76,9 @@ public class FamilyService {
     }
 
     @Transactional(readOnly = true)
+    //@PreAuthorize("hasRole('ROLE_PREMIUM')")
     public List<ChildDto> readAllChildren() {
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+        //tutaj można użyć wzorzec Strategii
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + FamilyRole.PREMIUM.toString()))) {
             return childRepository.findAll().stream().map(ChildConverter::entityToDto).collect(Collectors.toList());
         } else {
