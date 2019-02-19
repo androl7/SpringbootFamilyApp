@@ -41,8 +41,10 @@ public class FamilyController {
             model.addAttribute("familyDetails",familyService.readFamily(familyService.findFamilyBySurname(authentication.getName()).getFamilyId()));
             return "FamilyDetails";
         }*/
-        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        return readFamilyMappers.stream().filter(mapper -> mapper.isForRole(authorities)).map(mapper -> mapper.readFamily(model)).findAny().orElse("");
+//        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//        return readFamilyMappers.stream().filter(mapper -> mapper.isForRole(authorities)).map(mapper -> mapper.readFamily(model)).findAny().orElse("");
+        model.addAttribute("families", familyService.readFamilies());
+        return "FamiliesTab";
     }
 
     @RequestMapping("/readFamily/{familyId}")

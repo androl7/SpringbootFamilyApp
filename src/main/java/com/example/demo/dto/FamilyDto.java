@@ -5,11 +5,12 @@ import com.example.demo.entity.FamilyRole;
 
 public class FamilyDto {
 
-    private int familyID;
+    private Integer familyID;
     private String family_surname;
     private String password;
     private Boolean valid;
     private FamilyRole familyRole;
+
 
 
     public int getFamilyID() {
@@ -74,4 +75,5 @@ public class FamilyDto {
 
     public FamilyDto() {
     }
+
 }

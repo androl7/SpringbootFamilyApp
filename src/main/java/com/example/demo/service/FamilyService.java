@@ -43,7 +43,11 @@ public class FamilyService {
 
     @Transactional
     public void createFamily(FamilyDto familyDto) {
-        familyRepository.save(FamilyConverter.dtoToEntity(familyDto));
+        if(FamilyConverter.dtoToEntity(familyDto).isNew()) {
+            familyRepository.save(FamilyConverter.dtoToEntity(familyDto));
+        }else {
+            System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSSTTTTTTTTTTTT");
+        }
     }
 
 

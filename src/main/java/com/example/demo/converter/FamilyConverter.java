@@ -6,9 +6,7 @@ import com.example.demo.entity.Family;
 public class FamilyConverter {
 
     public static Family dtoToEntity(FamilyDto familyDto) {
-        Family family = new Family(familyDto.getFamily_surname(),familyDto.getPassword(),familyDto.getValid(),familyDto.getFamilyRole());
-        family.setFamilyId(familyDto.getFamilyID());
-        return family;
+        return new Family(familyDto.getFamily_surname(),familyDto.getPassword(),familyDto.getValid(),familyDto.getFamilyRole(),true);
     }
 
     public static FamilyDto entityToDto(Family family) {

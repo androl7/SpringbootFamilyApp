@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.google.common.collect.ComparisonChain;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,15 +9,16 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Family")
-public class Family implements Serializable {
+public class Family implements Serializable, Persistable {
     @Id
     @Column(name = "family_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer familyId;
+//  @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer familyId = 2;
 
     @Column(name = "family_surname")
     private String family_surname;
@@ -29,6 +31,9 @@ public class Family implements Serializable {
 
     @Column(name = "valid")
     private Boolean valid;
+
+    @Transient
+    private boolean isNew = false;
 
 
     @OneToOne(mappedBy = "family", cascade = CascadeType.MERGE)
@@ -98,16 +103,21 @@ public class Family implements Serializable {
         this.valid = valid;
     }
 
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
     public Family(Father father, List<Child> children) {
         this.father = father;
         this.children = children;
     }
 
-    public Family(String family_surname, String password, Boolean valid, FamilyRole familyRole) {
+    public Family(String family_surname, String password, Boolean valid, FamilyRole familyRole,Boolean isNew) {
         this.family_surname = family_surname;
         this.password = password;
         this.valid = valid;
         this.familyRole = familyRole;
+        this.isNew = isNew;
     }
 
     public Family() {
@@ -143,5 +153,15 @@ public class Family implements Serializable {
     @Override
     public String toString() {
         return "FamilyID: " + familyId + " FatherName: " + father.getName() + " " + father.getSurname();
+    }
+
+    @Override
+    public Integer getId() {
+        return familyId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew;
     }
 }
